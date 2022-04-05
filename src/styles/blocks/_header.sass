@@ -1,0 +1,32 @@
+.Header
+  &-wrapper
+    box-shadow: 0 2px 20px 2px rgb(34 60 80 / 20%)
+    //background-color: $header
+    border-radius: 0 0 20px 20px
+    padding: 20px 40px
+    display: flex
+    justify-content: space-between
+    align-items: center
+    font-weight: 600
+    font-size: 20px
+
+  &__button
+    border: 1px solid $button-border
+    border-radius: 5px
+    margin-right: 20px
+    font-size: 15px
+    font-weight: 600
+    color: $text-color
+    padding: 5px
+    transition: .3s
+    &:last-child
+      margin-right: 0
+    &:hover
+      transition: .3s
+      border: 1px solid $text-hover
+      background-color: $text-hover
+      color: #fff
+    &:active
+      transition: .3s
+      transform: scale(1.3)
+

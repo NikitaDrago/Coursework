@@ -1,0 +1,29 @@
+.Home
+  &-wrapper
+    &__title
+      color: $text-color
+  &-container
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    grid-gap: 40px 0
+    justify-content: center
+    &__item
+      margin: auto
+      height: 80px
+      width: 80%
+      padding: 20px
+      border-radius: 20px
+      text-align: center
+      box-shadow: 0 2px 20px 2px rgb(34 60 80 / 20%)
+      cursor: pointer
+      color: #4f4f4f
+      background: #C1C9E4
+      background: linear-gradient(to bottom right, #C1C9E4, #84CFEB)
+      transition: .3s
+      &:hover
+        transition: .3s
+        transform: scale(1.05)
+      &:active
+        transition: .3s
+        transform: scale(1.15)
+
