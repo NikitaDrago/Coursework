@@ -1,13 +1,10 @@
 {
   "name": "faculty",
   "version": "0.1.0",
-  "homepage": "http://NikitaDrago.github.io/Faculty/",
+  "private": true,
+  "homepage": "https://NikitaDrago.github.io/Faculty/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
-    "@testing-library/jest-dom": "^5.16.3",
-    "@testing-library/react": "^12.1.4",
-    "@testing-library/user-event": "^13.5.0",
-    "gh-pages": "^3.2.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-redux": "^7.2.8",
@@ -15,6 +12,10 @@
     "react-scripts": "5.0.0",
     "sass": "^1.49.9",
     "web-vitals": "^2.1.4"
+  },
+
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
