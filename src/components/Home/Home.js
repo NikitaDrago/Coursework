@@ -1,53 +1,38 @@
 import CourseCard from "./CourseCard";
 import { useNavigate } from "react-router-dom";
-
-export const COURSES = [
-  {
-    title: 'Data Engineering',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus assumenda aut eius, error ex fugit iure laboriosam, maxime minus neque non nulla odit perspiciatis qui recusandae, suscipit tenetur voluptate voluptatibus.',
-    weeks: 3,
-    hours: 10,
-  },
-  {
-    title: 'Java Web Development',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus assumenda aut eius, error ex fugit iure laboriosam, maxime minus neque non nulla odit perspiciatis qui recusandae, suscipit tenetur voluptate voluptatibus.',
-    weeks: 6,
-    hours: 10,
-  },
-  {
-    title: 'Cloud and DevOps',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus assumenda aut eius, error ex fugit iure laboriosam, maxime minus neque non nulla odit perspiciatis qui recusandae, suscipit tenetur voluptate voluptatibus.',
-    weeks: 6,
-    hours: 18,
-  },
-  {
-    title: 'Modern SAP Development',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus assumenda aut eius, error ex fugit iure laboriosam, maxime minus neque non nulla odit perspiciatis qui recusandae, suscipit tenetur voluptate voluptatibus.',
-    weeks: 3,
-    hours: 20,
-  },
-  {
-    title: 'Performance Optimization',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus assumenda aut eius, error ex fugit iure laboriosam, maxime minus neque non nulla odit perspiciatis qui recusandae, suscipit tenetur voluptate voluptatibus.',
-    weeks: 5,
-    hours: 5,
-  },
-];
+import { useEffect, useState } from "react";
+import { clearCourse, getAllCourses } from "../../store/coursesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { coursesListSelector } from "../../store/selectors";
+import Spinner from "../Spinner";
 
 const Home = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const courses = useSelector(coursesListSelector);
+  const [spinner, setSpinner] = useState(true);
 
   const handleCourseCard = (course) => {
-    navigate(`/courses/${course.title.split(' ').join('')}`)
+    navigate(`/courses/${course.id}`);
   };
 
+  const fetchData = async () => {
+    await dispatch(getAllCourses());
+    await dispatch(clearCourse());
+    setSpinner(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <div className="wrapper">
+    spinner ? <Spinner/> : <div className="wrapper">
       <h2 className="Home-wrapper__title">Доступные курсы</h2>
       <div className="Home-container">
         {
-          COURSES.map(course => <CourseCard
-            key={`${course.title}_${Date.now()}`}
+          courses && courses.map(course => <CourseCard
+            key={`${course.name}_${Date.now()}`}
             course={course}
             onCourseCard={handleCourseCard}
           />)

@@ -1,11 +1,20 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { idSelector, isAuthSelector, roleSelector } from "../../store/selectors";
+import { useCallback } from "react";
 
-const Header = ({onClickModal, admin, onAdmin}) => {
-  const navigate = useNavigate()
+const Header = ({onClickModal, onLogout}) => {
+  const navigate = useNavigate();
+  const isAuth = useSelector(isAuthSelector);
+  const role = useSelector(roleSelector);
 
-  const handleProfile = () => {
-    navigate(`/profile/${Math.round(Math.random() * 100000000)}`)
-  }
+  const handleProfile = useCallback(() => {
+    navigate(`/profile`);
+  }, [navigate]);
+
+  const handleEditProfiles = useCallback(() => {
+    navigate('/profileeditor');
+  }, [navigate]);
 
   return (
     <header className="Header-wrapper">
@@ -16,12 +25,16 @@ const Header = ({onClickModal, admin, onAdmin}) => {
         Главная
       </NavLink>
       {
-       admin ?
-         <div>
-           <button className="button Header__button" onClick={handleProfile}>Профиль</button>
-           <button className="button Header__button" onClick={onAdmin}>Выйти</button>
-         </div>
-         : <button className="button Header__button" onClick={onClickModal}>Войти</button>
+        isAuth ?
+          <div>
+            {
+              role === 'ADMIN' &&
+              <button className="button Header__button" onClick={handleEditProfiles}>Пользователи</button>
+            }
+            <button className="button Header__button" onClick={handleProfile}>Профиль</button>
+            <button className="button Header__button" onClick={onLogout}>Выйти</button>
+          </div>
+          : <button className="button Header__button" onClick={onClickModal}>Войти</button>
       }
     </header>
   );

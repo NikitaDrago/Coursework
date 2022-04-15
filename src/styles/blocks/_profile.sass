@@ -1,10 +1,5 @@
 .Profile
   &-container
-    //margin: 50px auto auto
-    //max-width: 500px
-    padding: 40px
-    border-radius: 20px
-    box-shadow: 0 2px 20px 2px rgb(34 60 80 / 20%)
     display: grid
     grid-template-columns: 1fr 1fr
 
@@ -22,19 +17,42 @@
       display: flex
       flex-direction: column
 
-      &__FIO
+      &__title
         text-align: center
         color: $text-color
         font-size: 25px
 
       &__item
         font-size: 18px
+        margin: 5px 0
+
+      &__input
+        font-size: 18px
+        padding: 10px
+        margin-bottom: 10px
+        border: none
+        max-width: 340px
+        width: 100%
+        border-radius: 10px
+        background-color: $modal
+
+
+        &:last-child
+          margin-bottom: 0
 
   &__button
     margin: 0 auto
+
+  &-edit
+    display: flex
+    justify-content: space-around
+    button
+      width: 250px
+
 
   &__line
     width: 100%
     height: 1px
     background: $header
     border: none
+    margin-bottom: 20px

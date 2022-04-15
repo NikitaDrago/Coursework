@@ -2,9 +2,26 @@
   max-width: 1290px
   width: 100%
   margin: 50px auto auto
+  padding: 40px
+  border-radius: 20px
+  box-shadow: 0 2px 20px 2px rgb(34 60 80 / 20%)
 
 .input
   outline: none
+  border: none
+
+.select
+  outline: none
+  border: 1px solid $button-border
+  color: $button-border
+  padding: 15px
+  font-size: 15px
+  border-radius: 20px
+  cursor: pointer
+
+  option
+      font-size: 15px
+      cursor: pointer
 
 .nav
   &-link
@@ -20,9 +37,34 @@
   outline: none
   background: none
   cursor: pointer
+
   &_negative
     border: 1px solid $negative
     color: $negative
+
     &:hover
       background-color: $negative
       color: #fff
+
+.spinner
+  display: inline-block
+  width: 2rem
+  height: 2rem
+  vertical-align: -0.125em
+  border: 0.25em solid $spinner
+  border-right-color: transparent
+  border-radius: 50%
+  animation: .75s linear infinite spinner-border
+
+  &-container
+    position: absolute
+    top: 20px
+    right: 50%
+    display: flex
+    align-items: center
+    justify-content: center
+    z-index: 2
+
+@keyframes spinner-border
+  to
+    transform: rotate(360deg)
