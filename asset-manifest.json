@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/faculty/static/css/main.4ac38312.css",
+    "main.js": "/faculty/static/js/main.ccc5c45c.js",
+    "static/media/profile_img.png": "/faculty/static/media/profile_img.dc815929f81069003d3b.png",
+    "index.html": "/faculty/index.html",
+    "main.4ac38312.css.map": "/faculty/static/css/main.4ac38312.css.map",
+    "main.ccc5c45c.js.map": "/faculty/static/js/main.ccc5c45c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4ac38312.css",
+    "static/js/main.ccc5c45c.js"
+  ]
+}
