@@ -5,7 +5,6 @@ const AccountModal = ({onClickModal, onLogin, setSpinner}) => {
   const [pass, setPass] = useState('');
 
   const handleClick = useCallback(() => {
-    console.log('click');
     setSpinner(true);
     onClickModal();
     onLogin(email, pass);

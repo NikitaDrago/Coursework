@@ -19,6 +19,28 @@ export const postNewProfileData = createAsyncThunk(
   }
 );
 
+export const deleteProfile = createAsyncThunk(
+  'users/delete',
+  async (id) => {
+    await fetch(`http://localhost:8080/api/users/${id}`, {
+      method: 'DELETE',
+    })
+  }
+)
+
+export const postProfile = createAsyncThunk(
+  'users/post',
+  async (data) => {
+    await fetch(`http://localhost:8080/api/users`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+  }
+)
+
 export const userSlice = createSlice({
   name: 'user',
   // initialState: store.getState(),
