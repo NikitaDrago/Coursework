@@ -1,15 +1,36 @@
+body
+  background: linear-gradient(to bottom right, #C1C9E4, #84CFEB)
+  height: 100vh
+
+  &::-webkit-scrollbar
+    width: 10px
+  &::-webkit-scrollbar-track
+    width: 10px
+  &::-webkit-scrollbar-thumb
+    width: 10px
+    background-color: $text-color
+    border: 2px solid #fff
+    border-radius: 5px
+
 .wrapper
-  max-width: 1290px
-  width: 100%
+  width: 1290px
   margin: 50px auto auto
   padding: 40px
   border-radius: 20px
-  box-shadow: 0 2px 20px 2px rgb(34 60 80 / 20%)
+  box-shadow: 0 2px 20px 2px rgb(34 60 80 / 60%)
+  background-color: #fff
 
 .input
   outline: none
   border: none
 
+  &_negative
+    border: 1px solid $negative
+
+
+.subtitle
+  &_negative
+    color: $negative
 .select
   outline: none
   border: 1px solid $button-border
@@ -20,8 +41,8 @@
   cursor: pointer
 
   option
-      font-size: 15px
-      cursor: pointer
+    font-size: 15px
+    cursor: pointer
 
 .nav
   &-link

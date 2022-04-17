@@ -2,37 +2,33 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { roleSelector } from "../../store/selectors";
-import { COURSES } from "../Home/Home";
 
 const EditCourceInfo = () => {
   const {id} = useParams();
-  const [course, setCourse] = useState();
   const role = useSelector(roleSelector);
 
-  useEffect(() => {
-    const response = COURSES.find(item => item.title.split(' ').join('') === id);
-    setCourse(response);
-  }, []);
-
   return (
-    <div className="wrapper">
-      {course &&
-      <div className="CourseInfo-container">
-        <h1 className="CourseInfo-container__title">
-          {course.title}
-        </h1>
-        <h5 className="CourseInfo-container__subtitle">
-          Кол-во недель обучения: {course.weeks}
-        </h5>
-        <p className="CourseInfo-container__description">
-          {course.description}
-        </p>
-        {role === 'STUDENT' && <div className="CourseInfo-admin">
+    <div className="wrapper" style={{display: 'flex', flexDiretion: 'column'}}>
+      <input placeholder="Название курса" className="input CourseInfo-container__input"/>
+      <input placeholder="Кол-во недель обучения: 10" className="input CourseInfo-container__input"/>
+      <textarea placeholder="Информация о курсе"
+                className="input CourseInfo-container__input CourseInfo-container__textarea"/>
+      <div className="CourseInfo-container-lecturer">
+        <hr className="Profile__line"/>
+        <input placeholder="Фамилия" className="input CourseInfo-container__input"/>
+        {/*<span className="CourseInfo-container-lecturer__FI">name surname</span>*/}
+        <span className="CourseInfo-container-lecturer__education">education</span>
+        <span className="CourseInfo-container-lecturer__phone">phone</span>
+        <span className="CourseInfo-container-lecturer__email">email</span>
+      </div>
+      {
+        role === 'ADMIN' && <div className="CourseInfo-admin">
           <button className="button CourseInfo-admin__button ">Редактировать курс</button>
           <button className="button button_negative CourseInfo-admin__button">Удалить</button>
-        </div>}
-      </div>
+        </div>
       }
     </div>
   );
 };
+
+export default EditCourceInfo;

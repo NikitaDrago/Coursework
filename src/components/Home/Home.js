@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { clearCourse, getAllCourses } from "../../store/coursesSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { coursesListSelector } from "../../store/selectors";
+import { coursesListSelector, isAuthSelector, roleSelector } from "../../store/selectors";
 import Spinner from "../Spinner";
 
 const Home = () => {
@@ -11,10 +11,16 @@ const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector(coursesListSelector);
   const [spinner, setSpinner] = useState(true);
+  const isAuth = useSelector(isAuthSelector);
+  const role = useSelector(roleSelector);
 
   const handleCourseCard = (course) => {
     navigate(`/courses/${course.id}`);
   };
+
+  // const handleEditCourse = () => {
+  //   navigate(`/courses/edit`);
+  // };
 
   const fetchData = async () => {
     await dispatch(getAllCourses());
@@ -24,7 +30,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  });
 
   return (
     spinner ? <Spinner/> : <div className="wrapper">
@@ -36,6 +42,9 @@ const Home = () => {
             course={course}
             onCourseCard={handleCourseCard}
           />)
+        }
+        {
+          isAuth && (role === 'ADMIN' || role === 'TEACHER') && <div className="Home-container__item Home-container__addCourse"/>
         }
       </div>
     </div>

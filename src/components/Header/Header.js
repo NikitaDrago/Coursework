@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { idSelector, isAuthSelector, roleSelector } from "../../store/selectors";
+import { isAuthSelector, roleSelector } from "../../store/selectors";
 import { useCallback } from "react";
 
 const Header = ({onClickModal, onLogout}) => {
@@ -13,7 +13,7 @@ const Header = ({onClickModal, onLogout}) => {
   }, [navigate]);
 
   const handleEditProfiles = useCallback(() => {
-    navigate('/profileeditor');
+    navigate('/panel');
   }, [navigate]);
 
   return (
@@ -29,7 +29,7 @@ const Header = ({onClickModal, onLogout}) => {
           <div>
             {
               role === 'ADMIN' &&
-              <button className="button Header__button" onClick={handleEditProfiles}>Пользователи</button>
+              <button className="button Header__button" onClick={handleEditProfiles}>Admin Panel</button>
             }
             <button className="button Header__button" onClick={handleProfile}>Профиль</button>
             <button className="button Header__button" onClick={onLogout}>Выйти</button>

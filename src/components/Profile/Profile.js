@@ -11,17 +11,25 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
   const [isEdit, setIsEdit] = useState(false);
   const [editLogin, setEditLogin] = useState('');
   const [editPass, setEditPass] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const handleSave = useCallback(() => {
-    const data = {
-      id: userId,
-      login: editLogin || login,
-      password: editPass || pass,
-      role,
-    };
+    if (editLogin && editPass) {
 
-    onSaveNewInfo(data, 'profile');
-  }, [editLogin, editPass, login, onSaveNewInfo, pass, role, userId]);
+      const data = {
+        id: userId,
+        login: editLogin || login,
+        password: editPass || pass,
+        role,
+      };
+
+      setSpinner(true);
+      setIsEdit(!isEdit);
+      onSaveNewInfo(data, 'profile');
+    } else {
+      setIsError(true);
+    }
+  }, [editLogin, editPass, isEdit, login, onSaveNewInfo, pass, role, setSpinner, userId]);
 
   return (
     <div className="wrapper">
@@ -31,12 +39,19 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
           <div className="Profile-info-container">
             <h2 className="Profile-info-container__title">Фамилия Имя Отчество</h2>
             <hr className="Profile__line"/>
+            {isError && <h3 className="Modal-form__subtitle">Вы ничего не изменили</h3>}
             {
               isEdit ? <>
-                  <input placeholder={`Старый логин: ${login}`} className="input Profile-info-container__input"
-                         onChange={(e) => setEditLogin(e.target.value)}/>
-                  <input placeholder={`Старый пароль: ${pass}`} className="input Profile-info-container__input"
-                         onChange={(e) => setEditPass(e.target.value)}/>
+                  <input placeholder={`Старый логин: ${login}`} className={(isError ? 'input_negative ' : '') + "input Profile-info-container__input"}
+                         onChange={(e) => {
+                           isError && setIsError(!isError)
+                           setEditLogin(e.target.value);
+                         }}/>
+                  <input placeholder={`Старый пароль: ${pass}`} className={(isError ? 'input_negative ' : '') + "input Profile-info-container__input"}
+                         onChange={(e) => {
+                           isError && setIsError(!isError)
+                           setEditPass(e.target.value);
+                         }}/>
                 </>
                 : <>
                   <span className="Profile-info-container__item">Логин: <i>{login}</i></span>
@@ -53,12 +68,7 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
                   Отменить редактирование
                 </button>
                 <button className="button CourseInfo-admin__button"
-                        onClick={() => {
-                          setSpinner(true);
-                          setIsEdit(!isEdit);
-                          handleSave();
-                        }}
-                >
+                        onClick={() => handleSave()}>
                   Сохранить
                 </button>
               </div>

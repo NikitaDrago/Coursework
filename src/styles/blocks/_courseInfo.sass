@@ -9,6 +9,33 @@
       margin: 0
       text-align: center
 
+    &__input
+      font-size: 18px
+      padding: 10px
+      margin: 0 auto 10px
+      border-radius: 10px
+      background-color: $modal
+      color: $text-color
+      max-width: 320px
+      width: 100%
+      text-align: center
+
+    &__textarea
+      resize: none
+      max-width: 500px
+      max-height: 150px
+      width: 100%
+
+      &::-webkit-scrollbar
+        width: 10px
+      &::-webkit-scrollbar-track
+        width: 10px
+      &::-webkit-scrollbar-thumb
+        width: 10px
+        background-color: $text-color
+        border: 2px solid #fff
+        border-radius: 5px
+
     &__subtitle
       text-align: center
       color: $text-subtitle
@@ -19,6 +46,17 @@
       width: 60%
       margin: 0 auto
       text-align: center
+
+    &-lecturer
+      margin-top: 25px
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+
+      &__FI
+        color: $text-color
+        font-weight: 500
 
   &-admin
     margin-top: 50px

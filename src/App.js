@@ -4,17 +4,18 @@ import './styles/style.sass';
 import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
 import AccountModal from "./components/AccountModal/AccountModal";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import CourseInfo from "./components/CourseInfo/CourseInfo";
 import Profile from "./components/Profile/Profile";
 import { authLogin, clearProfile, setNewData } from "./store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { coursesListSelector, idSelector, isAuthSelector, roleSelector } from "./store/selectors";
+import { idSelector, isAuthSelector, roleSelector } from "./store/selectors";
 import ProfilesEditor from "./components/AdminPanel/ProfilesEditor";
 import { postNewProfileData } from "./store/userSlice";
 import { getUsers } from "./store/adminSlice";
-import { clearCourse, getAllCourses } from "./store/coursesSlice";
 import Spinner from "./components/Spinner";
+import EditCourceInfo from "./components/CourseInfo/EditCourceInfo";
+import ErrorPage from "./components/ErrorPage/ErrorPage";
 
 const App = () => {
   const id = useSelector(idSelector);
@@ -24,7 +25,7 @@ const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const role = useSelector(roleSelector);
-  const courses = useSelector(coursesListSelector);
+  // const courses = useSelector(coursesListSelector);
 
   const handleClickModal = useCallback(() => setModal(!modal), [modal]);
 
@@ -33,8 +34,8 @@ const App = () => {
     navigate('/');
   }, [dispatch, navigate]);
 
-  const handleLogin = useCallback(async (login, password) => {
-    await dispatch(authLogin({login, password}));
+  const handleLogin = useCallback(async (login, password, closeModal) => {
+    await dispatch(authLogin({login, password})).then(res => res.meta.requestStatus === "fulfilled" && closeModal())
     setSpinner(false);
   }, [dispatch]);
 
@@ -67,16 +68,19 @@ const App = () => {
       }
 
       <Routes>
-
-        <Route exact path="/" element={<Home setSpinner={setSpinner}/>}/>
-        <Route exact path="/courses/:id" element={<CourseInfo/>}/>
+        <Route path="*" element={<ErrorPage navigate={navigate}/>}/>
+        <Route path="/" element={<Home setSpinner={setSpinner}/>}/>
+        <Route path="/courses/:id" element={<CourseInfo/>}/>
+        {
+          isAuth && (role === 'ADMIN' || role === 'TEACHER') && <Route path="/courses" element={<EditCourceInfo/>}/>
+        }
         {
           isAuth &&
-          <Route exact path="/profile" element={<Profile setSpinner={setSpinner} onSaveNewInfo={saveNewInfo}/>}/>
+          <Route path="/profile" element={<Profile setSpinner={setSpinner} onSaveNewInfo={saveNewInfo}/>}/>
         }
         {
           isAuth && role === 'ADMIN' &&
-          <Route exact path="/profileeditor"
+          <Route path="/panel"
                  element={<ProfilesEditor setSpinner={setSpinner} onSaveNewInfo={saveNewInfo}/>}/>
         }
       </Routes>
@@ -85,6 +89,5 @@ const App = () => {
 };
 
 export default App;
-
 
 //[{"id":1,"lecturer":{"account":{"id":3,"login":"teacher1","password":"password","role":"TEACHER"},"name":"Мария","surname":"Юдина","phone":"375(25)707-01-26","email":"gonnucropraume-5739@gmail.com","education":"ASSISTANT","courses":null},"name":"Data Engineering","description":"На тренинге ты научишься трансформировать данные в качественную информацию, которая приносит пользу бизнесу.","weeks":10,"hours":3,"distributions":null},{"id":2,"lecturer":{"account":{"id":4,"login":"teacher2","password":"password","role":"TEACHER"},"name":"Дарья","surname":"Ермакова","phone":"375(33)306-36-32","email":"wicussaugoitti-4624@yandex.com","education":"SENIOR_LECTURER","courses":null},"name":"Java Web Development","description":"Задача курса — на примере небольшого проекта познакомиться с основными методами и технологиями.","weeks":10,"hours":6,"distributions":null},{"id":3,"lecturer":{"account":{"id":5,"login":"teacher3","password":"password","role":"TEACHER"},"name":"Деитд","surname":"Русанов","phone":"375(29)508-08-44","email":"cadefripaujo-6588@mail.com","education":"DOCENT","courses":null},"name":"Cloud and DevOps","description":"На нашем тренинге мы научим тебя применять методологии DevOps и поможем прокачаться в Cloud-технологиях.","weeks":18,"hours":6,"distributions":null},{"id":4,"lecturer":{"account":{"id":6,"login":"teacher4","password":"password","role":"TEACHER"},"name":"Ева","surname":"Попова","phone":"375(29)431-11-75","email":"canewalleuppe-6591@mail.com","education":"DOCENT","courses":null},"name":"Modern SAP Development","description":"Программа включает изучение современных технологий разработки ПО в средах SAP ECC и SAP Cloud Platform.","weeks":20,"hours":3,"distributions":null},{"id":5,"lecturer":{"account":{"id":7,"login":"teacher5","password":"password","role":"TEACHER"},"name":"Денис","surname":"Дроздов","phone":"375(33)500-93-45","email":"daboucehutte-5902@yandex.com","education":"PROFESSOR","courses":null},"name":"Performance Optimization","description":"На тренинге вы научитесь основам тестирования и анализа производительности компьютерных систем.","weeks":5,"hours":5,"distributions":null}]
