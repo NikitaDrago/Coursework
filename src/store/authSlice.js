@@ -7,6 +7,7 @@ const initialState = {
   login: null,
   password: null,
   role: null,
+  info: null
 };
 
 export const authLogin = createAsyncThunk(
@@ -47,15 +48,24 @@ export const authSlice = createSlice({
       };
     },
     setNewData: (state, action) => {
-      return {...action.payload, isAuth: true};
+      if (action.payload?.role === 'ADMIN') {
+        return {...action.payload, isAuth: true};
+      } else {
+        state.info = action.payload
+        state.isAuth = true
+      }
     },
   },
   extraReducers: builder => {
     builder.addCase(authLogin.fulfilled, (state, action) => {
-      state.id = action.payload.id;
-      state.login = action.payload.login;
-      state.password = action.payload.password;
-      state.role = action.payload.role;
+      if (action.payload?.role === 'ADMIN') {
+        state.id = action.payload.id;
+        state.login = action.payload.login;
+        state.password = action.payload.password;
+        state.role = action.payload.role;
+      } else {
+        state.info = action.payload;
+      }
 
       state.isAuth = true;
     })

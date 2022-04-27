@@ -5,6 +5,8 @@ export const passwordSelector = (state) => state.auth.password;
 export const roleSelector = (state) => state.auth.role;
 export const hasErrorSelector = state => state.auth.hasError
 
+export const infoSelector = state => state.auth.info
+
 //------Admin
 export const usersSelector = state => state.admin.users;
 

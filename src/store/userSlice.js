@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = {
+  user: null
+};
 
 export const postNewProfileData = createAsyncThunk(
   'user/fetchLogin',
-  async (data) => {
+  async ({data, url}) => {
     try {
-      await fetch("http://localhost:8080/api/users", {
+      await fetch(`http://localhost:8080/api/${url}`, {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",
@@ -24,9 +26,9 @@ export const deleteProfile = createAsyncThunk(
   async (id) => {
     await fetch(`http://localhost:8080/api/users/${id}`, {
       method: 'DELETE',
-    })
+    });
   }
-)
+);
 
 export const postProfile = createAsyncThunk(
   'users/post',
@@ -37,9 +39,9 @@ export const postProfile = createAsyncThunk(
         'Content-type': 'application/json'
       },
       body: JSON.stringify(data)
-    })
+    });
   }
-)
+);
 
 export const userSlice = createSlice({
   name: 'user',

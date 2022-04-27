@@ -5,6 +5,31 @@ const initialState = {
   course: null
 };
 
+export const putCourse = createAsyncThunk(
+  'courses/put',
+  async (data) => {
+    await fetch('http://localhost:8080/api/courses', {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+);
+
+
+export const deleteCourse = createAsyncThunk(
+  'courses/delete',
+  async (id) => {
+    await fetch(`http://localhost:8080/api/courses/${id}`,
+      {
+        method: 'DELETE',
+      }
+    );
+  }
+);
+
 export const getAllCourses = createAsyncThunk(
   'courses/getDataAll',
   async () => {

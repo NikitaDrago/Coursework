@@ -5,7 +5,6 @@ import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
 import AccountModal from "./components/AccountModal/AccountModal";
 import { useCallback, useState } from "react";
-import CourseInfo from "./components/CourseInfo/CourseInfo";
 import Profile from "./components/Profile/Profile";
 import { authLogin, clearProfile, setNewData } from "./store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,8 +13,9 @@ import ProfilesEditor from "./components/AdminPanel/ProfilesEditor";
 import { postNewProfileData } from "./store/userSlice";
 import { getUsers } from "./store/adminSlice";
 import Spinner from "./components/Spinner";
-import EditCourceInfo from "./components/CourseInfo/EditCourceInfo";
+import EditCourceInfo from "./components/Course/EditCourceInfo";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
+import Course from "./components/Course/Course";
 
 const App = () => {
   const id = useSelector(idSelector);
@@ -35,24 +35,43 @@ const App = () => {
   }, [dispatch, navigate]);
 
   const handleLogin = useCallback(async (login, password, closeModal) => {
-    await dispatch(authLogin({login, password})).then(res => res.meta.requestStatus === "fulfilled" && closeModal())
+    await dispatch(authLogin({login, password})).then(res => res.meta.requestStatus === "fulfilled" && closeModal());
     setSpinner(false);
   }, [dispatch]);
 
   const saveNewInfo = useCallback(async (data, type) => {
-    await dispatch(postNewProfileData(data));
+    let url = 'users';
 
-    switch (type) {
-      case 'profile': {
-        await dispatch(setNewData(data));
-        break;
+    if (type === 'TEACHER') {
+      url = 'lecturers';
+    } else if (type === 'STUDENT') {
+      url = 'students';
+    }
+    try {
+      await dispatch(postNewProfileData({data, url}));
+
+      switch (type) {
+        case 'ADMIN': {
+          await dispatch(setNewData(data));
+          break;
+        }
+        case 'TEACHER': {
+          await dispatch(setNewData(data));
+          break;
+        }
+        case 'STUDENT': {
+          await dispatch(setNewData(data));
+          break;
+        }
+        case 'users': {
+          await dispatch(getUsers(id));
+          break;
+        }
+        default:
+          break;
       }
-      case 'users': {
-        await dispatch(getUsers(id));
-        break;
-      }
-      default:
-        break;
+    } catch (e) {
+      console.log(e)
     }
 
     setSpinner(false);
@@ -70,7 +89,7 @@ const App = () => {
       <Routes>
         <Route path="*" element={<ErrorPage navigate={navigate}/>}/>
         <Route path="/" element={<Home setSpinner={setSpinner}/>}/>
-        <Route path="/courses/:id" element={<CourseInfo/>}/>
+        <Route path="/courses/:id" element={<Course/>}/>
         {
           isAuth && (role === 'ADMIN' || role === 'TEACHER') && <Route path="/courses" element={<EditCourceInfo/>}/>
         }

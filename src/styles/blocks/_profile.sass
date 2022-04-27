@@ -1,21 +1,14 @@
 .Profile
-  &-container
-    display: grid
-    grid-template-columns: 1fr 1fr
-
-    &__photo
-      border-radius: 20px
-      margin: auto
-
   &-info
     &-wrapper
       display: flex
       flex-direction: column
-      justify-content: space-between
+      justify-content: center
 
     &-container
       display: flex
       flex-direction: column
+      align-items: center
 
       &__title
         text-align: center
@@ -41,7 +34,7 @@
           margin-bottom: 0
 
   &__button
-    margin: 0 auto
+    margin: 25px auto 0
 
   &-edit
     display: flex
@@ -55,4 +48,4 @@
     height: 1px
     background: $header
     border: none
-    margin-bottom: 20px
+    margin: 20px 0
