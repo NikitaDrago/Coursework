@@ -30,8 +30,12 @@
         color: $text-color
         font-weight: 500
 
+        &_marginRight
+          margin-right: 20px
+
         &:last-child
           margin-bottom: 0
+
 
   &__button
     margin: 25px auto 0
@@ -39,6 +43,7 @@
   &-edit
     display: flex
     justify-content: space-around
+
     button
       width: 250px
 
@@ -49,3 +54,15 @@
     background: $header
     border: none
     margin: 20px 0
+
+
+@media(max-width: 900px)
+  .Profile
+    &-info
+      &-container
+        &__input
+          &_marginRight
+            margin-right: 0
+    &-edit
+      button
+        width: 40%

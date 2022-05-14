@@ -4,8 +4,10 @@ body
 
   &::-webkit-scrollbar
     width: 10px
+
   &::-webkit-scrollbar-track
     width: 10px
+
   &::-webkit-scrollbar-thumb
     width: 10px
     background-color: $text-color
@@ -13,7 +15,9 @@ body
     border-radius: 5px
 
 .wrapper
-  width: 1290px
+  min-width: 320px
+  max-width: 1290px
+  width: 100%
   margin: 50px auto auto
   padding: 40px
   border-radius: 20px
@@ -27,10 +31,14 @@ body
   &_negative
     border: 1px solid $negative
 
+.text
+  &_success
+    color: $succes
 
 .subtitle
   &_negative
     color: $negative
+
 .select
   outline: none
   border: 1px solid $button-border
@@ -39,6 +47,7 @@ body
   font-size: 15px
   border-radius: 20px
   cursor: pointer
+
   &_negative
     border: 1px solid $negative
 
@@ -91,3 +100,12 @@ body
 @keyframes spinner-border
   to
     transform: rotate(360deg)
+
+@media(max-width: 1200px)
+  .wrapper
+    width: 80%
+@media(max-width: 768px)
+  body
+    background: #9cd8ee
+  .wrapper
+    width: 65%

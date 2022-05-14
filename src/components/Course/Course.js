@@ -33,10 +33,9 @@ const Course = () => {
     if (course.lecturer.account.id === +e.target.value || +e.target.value === -1) {
       setIsError(true);
     } else {
-      setIsError(false)
+      setIsError(false);
     }
   };
-
 
   const fetchLectures = () => {
     fetch('http://localhost:8080/api/lecturers')
@@ -53,7 +52,7 @@ const Course = () => {
       );
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!selectLecture && !newTitle.current.value && !newWeeks.current.value && !newDescription.current.value) {
       setSpinner(false);
       setIsError(true);
@@ -61,29 +60,33 @@ const Course = () => {
     }
 
     const data = {
-      id,
+      id: Number(id),
+      lecturer: {
+        account: {
+          id: Number(selectLecture?.id || course.lecturer.account.id)
+        }
+      },
       name: newTitle.current.value || course.name,
       description: newDescription.current.value || course.description,
       weeks: newWeeks.current.value || course.weeks,
       hours: course.hours,
-      lecturer: {
-        account: {
-          id: selectLecture?.id || id
-        }
-      },
     };
 
-    await dispatch(putCourse(data));
-    await dispatch(getCourseById(id));
-    setIsEdit(!isEdit);
-    setSelectLecture(null);
-    setSpinner(false);
+    Promise
+      .all([dispatch(putCourse(data)), dispatch(getCourseById(id))])
+      .then(() => {
+        setIsEdit(!isEdit);
+        setSelectLecture(null);
+        setSpinner(false);
+      });
   };
 
-  const handleDeleteCourse = async () => {
-    await dispatch(deleteCourse(id));
-    navigate('/');
-    setSpinner(false);
+  const handleDeleteCourse = () => {
+    dispatch(deleteCourse(id))
+      .then(() => {
+        navigate('/');
+        setSpinner(false);
+      });
   };
 
   useEffect(() => {
@@ -101,9 +104,17 @@ const Course = () => {
 
           {
             isEdit ?
-              <EditCourceInfo lectures={lectures} selectLecture={selectLecture} role={role} course={course}
-                              onOption={handleOption} newDescription={newDescription} newTitle={newTitle}
-                              newWeeks={newWeeks} isError={isError} setIsError={setIsError}
+              <EditCourceInfo
+                lectures={lectures}
+                selectLecture={selectLecture}
+                role={role}
+                course={course}
+                onOption={handleOption}
+                newDescription={newDescription}
+                newTitle={newTitle}
+                newWeeks={newWeeks}
+                isError={isError}
+                setIsError={setIsError}
               />
               : <CourseInfo role={role} course={course}/>
           }

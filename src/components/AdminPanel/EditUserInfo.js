@@ -10,12 +10,17 @@ const EditUserInfo = ({
                         setIsError
                       }) =>
   <div className="AdminPanel-userInfo">
-    <input ref={changeLogin} placeholder={profile ? `Login: ${profile.login}` : 'login'}
-           onChange={() => isError && setIsError(!isError)}
-           className={(isError ? 'input_negative ' : '') + "input Profile-info-container__input"}/>
-    <input ref={changePass} type="password" placeholder={profile ? `Password: ${profile.password}` : 'password'}
-           className={(isError ? 'input_negative ' : '') + "input Profile-info-container__input"}
-           onChange={() => isError && setIsError(!isError)}
+    <input
+      ref={changeLogin}
+      placeholder={profile ? `Login: ${profile.login}` : 'login'}
+      onChange={() => isError && setIsError(!isError)}
+      className={(isError ? 'input_negative ' : '') + "input Profile-info-container__input"}/>
+    <input
+      ref={changePass}
+      type="password"
+      placeholder={profile ? `Password: ${profile.password}` : 'password'}
+      className={(isError ? 'input_negative ' : '') + "input Profile-info-container__input"}
+      onChange={() => isError && setIsError(!isError)}
     />
 
     <select ref={changeRole} className="Profile-info-container__input AdminPanel-userInfo__select">
@@ -35,11 +40,12 @@ const EditUserInfo = ({
       Сохранить
     </button>
     {
-      profile && <button className="button button_negative AdminPanel__button"
-                         onClick={() => {
-                           setSpinner(true);
-                           onDeleteProfile();
-                         }}
+      profile && <button
+        className="button button_negative AdminPanel__button"
+        onClick={() => {
+          setSpinner(true);
+          onDeleteProfile();
+        }}
       >
         Удалить пользователя
       </button>

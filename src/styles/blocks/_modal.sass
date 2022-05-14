@@ -16,7 +16,6 @@
     background-color: $modal
     position: absolute
     top: 25%
-    right: 40%
     display: flex
     align-items: center
     justify-content: center
@@ -51,6 +50,7 @@
     &__title
       margin: 0 0 30px
       color: $text-color
+
     &__subtitle
       color: $negative
       font-size: 15px
@@ -87,3 +87,23 @@
       font-size: 20px
 
 
+@media(max-width: 1200px)
+  .Modal
+    &-window
+      width: 260px
+      height: 160px
+      padding: 20px 40px
+      border-radius: 40px 10px
+      background-color: $modal
+    &-form
+      &__title
+        margin: auto auto 10px
+      &__subtitle
+        font-size: 10px
+      &__input
+        padding: 5px
+        border-radius: 5px
+      &__button
+        margin-top: 15px
+
+@media(max-width: 768px)

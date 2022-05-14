@@ -26,7 +26,7 @@ const ProfilesEditor = ({onSaveNewInfo}) => {
     }
   }, [users]);
 
-  const handleSave = useCallback(async () => {
+  const handleSave = useCallback(() => {
     const newInfo = {
       id: profile.id,
       login: newLogin.current?.value || profile.login,
@@ -34,21 +34,25 @@ const ProfilesEditor = ({onSaveNewInfo}) => {
       role: newRole.current?.value || profile.role,
     };
 
-    await onSaveNewInfo({...profile, ...newInfo}, 'users');
-    setProfile(null);
-    setSpinner(false);
+    onSaveNewInfo({...profile, ...newInfo}, 'users')
+      .then(() => {
+        setProfile(null);
+        setSpinner(false);
+      });
   }, [onSaveNewInfo, profile]);
 
-  const handleDeleteProfile = useCallback(async () => {
-    await dispatch(deleteProfile(profile.id));
-    await dispatch(getUsers(id));
-    setProfile(null);
-    setSpinner(false);
+  const handleDeleteProfile = useCallback(() => {
+    Promise
+      .all(dispatch(deleteProfile(profile.id)), dispatch(getUsers(id)))
+      .then(() => {
+        setProfile(null);
+        setSpinner(false);
+      });
   }, [dispatch, id, profile]);
 
-  const handleAddProfile = useCallback(async () => {
-    const login = newLogin && newLogin.current?.value
-    const password = newPass && newPass.current?.value
+  const handleAddProfile = useCallback(() => {
+    const login = newLogin && newLogin.current?.value;
+    const password = newPass && newPass.current?.value;
 
     if (login && password) {
       const newInfo = {
@@ -61,11 +65,12 @@ const ProfilesEditor = ({onSaveNewInfo}) => {
       newPass.current.value = '';
       newRole.current.value = 'STUDENT';
 
-      await dispatch(postProfile(newInfo));
-      await dispatch(getUsers(id));
-
-      setProfile(null);
-      setSpinner(false);
+      Promise
+        .all([dispatch(postProfile(newInfo)), dispatch(getUsers(id))])
+        .then(() => {
+          setProfile(null);
+          setSpinner(false);
+        });
     } else {
       setIsError(true);
       setSpinner(false);

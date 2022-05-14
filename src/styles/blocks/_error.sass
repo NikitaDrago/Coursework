@@ -2,6 +2,7 @@
 
 .Error
   &-container
+    min-width: 375px
     display: flex
     align-items: center
     justify-content: center
@@ -55,3 +56,33 @@
         span
           font-size: 20px
           font-weight: 400
+
+
+@media(max-width: 1200px)
+  .Error
+    &-container
+      &__cogwheel
+        height: 230px
+        width: 200px
+        margin-right: 70px
+      &-text
+        &__404
+          font-size: 160px
+        &__title
+          font-size: 34px
+        &__subtitle
+          font-size: 15px
+        &-back
+          margin-top: 45px
+          img
+            width: 30px
+            height: 30px
+            margin-right: 13px
+          span
+            font-size: 15px
+@media(max-width: 768px)
+  .Error
+    &-container
+      text-align: center
+      &__cogwheel
+       display: none

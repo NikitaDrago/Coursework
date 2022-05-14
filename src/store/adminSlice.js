@@ -12,22 +12,6 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-// export const setUsers = createAsyncThunk(
-//   'admin/setUsers',
-//   async (data) => {
-//     const res = await fetch('http://localhost:8080/api/users', {
-//       method: 'PUT',
-//       headers: {
-//         "Content-Type": "application/json",
-//         Accept: 'application/json'
-//       },
-//       body: JSON.stringify(data)
-//     });
-//
-//     return await res.json();
-//   }
-// );
-
 export const adminSlice = createSlice({
   name: 'admin',
   initialState,

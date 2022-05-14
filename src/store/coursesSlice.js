@@ -19,6 +19,19 @@ export const putCourse = createAsyncThunk(
 );
 
 
+export const postCourse = createAsyncThunk(
+  'courses/post',
+  async (data) => {
+    await fetch('http://localhost:8080/api/courses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+  }
+);
+
 export const deleteCourse = createAsyncThunk(
   'courses/delete',
   async (id) => {

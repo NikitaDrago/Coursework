@@ -1,6 +1,6 @@
 import CourseCard from "./CourseCard";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { clearCourse, getAllCourses } from "../../store/coursesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { coursesListSelector, isAuthSelector, roleSelector } from "../../store/selectors";
@@ -14,18 +14,18 @@ const Home = () => {
   const isAuth = useSelector(isAuthSelector);
   const role = useSelector(roleSelector);
 
-  const handleCourseCard = useCallback((course) => {
+  const handleCourseCard = (course) => {
     navigate(`/courses/${course.id}`);
-  }, [navigate]);
+  };
 
-  // const handleEditCourse = () => {
-  //   navigate(`/courses/edit`);
-  // };
+  const handleAddCourse = () => {
+    navigate('/courses/add');
+  };
 
-  const fetchData = async () => {
-    await dispatch(getAllCourses());
-    await dispatch(clearCourse());
-    setSpinner(false);
+  const fetchData = () => {
+    Promise
+      .all([dispatch(clearCourse()), dispatch(getAllCourses())])
+      .then(() => setSpinner(false));
   };
 
   useEffect(() => {
@@ -44,7 +44,10 @@ const Home = () => {
           />)
         }
         {
-          isAuth && (role === 'ADMIN' || role === 'TEACHER') && <div className="Home-container__item Home-container__addCourse"/>
+          isAuth && (role === 'ADMIN' || role === 'TEACHER') && <div
+            className="Home-container__item Home-container__addCourse"
+            onClick={handleAddCourse}
+          />
         }
       </div>
     </div>

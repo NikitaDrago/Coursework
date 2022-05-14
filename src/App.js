@@ -1,4 +1,3 @@
-import './App.css';
 import { Route, Routes, useNavigate } from "react-router-dom";
 import './styles/style.sass';
 import Header from "./components/Header/Header";
@@ -16,6 +15,7 @@ import Spinner from "./components/Spinner";
 import EditCourceInfo from "./components/Course/EditCourceInfo";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 import Course from "./components/Course/Course";
+import AddCourse from "./components/Course/AddCourse";
 
 const App = () => {
   const id = useSelector(idSelector);
@@ -34,10 +34,11 @@ const App = () => {
     navigate('/');
   }, [dispatch, navigate]);
 
-  const handleLogin = useCallback(async (login, password, closeModal) => {
-    await dispatch(authLogin({login, password})).then(res => res.meta.requestStatus === "fulfilled" && closeModal());
-    setSpinner(false);
-  }, [dispatch]);
+  const handleLogin = (login, password, closeModal) => {
+    dispatch(authLogin({login, password}))
+      .then(res => res.meta.requestStatus === "fulfilled" && closeModal())
+      .then(() => setSpinner(false));
+  };
 
   const saveNewInfo = useCallback(async (data, type) => {
     let url = 'users';
@@ -71,7 +72,7 @@ const App = () => {
           break;
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
 
     setSpinner(false);
@@ -91,7 +92,10 @@ const App = () => {
         <Route path="/" element={<Home setSpinner={setSpinner}/>}/>
         <Route path="/courses/:id" element={<Course/>}/>
         {
-          isAuth && (role === 'ADMIN' || role === 'TEACHER') && <Route path="/courses" element={<EditCourceInfo/>}/>
+          isAuth && (role === 'ADMIN' || role === 'TEACHER') && [
+            <Route key={'addcourse'} exact path="/courses/add" element={<AddCourse/>}/>,
+            <Route key={'editcourse'} exact path="/courses" element={<EditCourceInfo/>}/>
+          ]
         }
         {
           isAuth &&
