@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { usersUrl } from "../constants";
 
 const initialState = {
   users: null
@@ -7,7 +8,7 @@ const initialState = {
 export const getUsers = createAsyncThunk(
   'admin/getUsers',
   async (id) => {
-    const res = fetch('http://localhost:8080/api/users');
+    const res = fetch(`${usersUrl}`);
     return await res.then(res => res.json()).then(res => res.filter(item => item.id !== id));
   }
 );

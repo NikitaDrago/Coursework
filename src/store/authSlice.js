@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { url } from "../constants";
 
 const initialState = {
   hasError: false,
@@ -18,7 +19,7 @@ export const authLogin = createAsyncThunk(
     formData.append("password", password);
 
     try {
-      const response = await fetch('http://localhost:8080/api/users/login', {
+      const response = await fetch(`${url}/api/users/login`, {
         method: 'POST',
         body: formData
       });

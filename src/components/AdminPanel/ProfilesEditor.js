@@ -5,7 +5,7 @@ import { idSelector, usersSelector } from "../../store/selectors";
 import UsersList from "./UsersList";
 import EditUserInfo from "./EditUserInfo";
 import Spinner from "../Spinner";
-import { deleteProfile, postProfile } from "../../store/userSlice";
+import { deleteProfile, postProfile } from "../../fetches/user";
 
 const ProfilesEditor = ({onSaveNewInfo}) => {
   const dispatch = useDispatch();

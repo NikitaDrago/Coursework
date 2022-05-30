@@ -1,9 +1,11 @@
-import img from '../../img/profile_img.png';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { idSelector, infoSelector, loginSelector, passwordSelector, roleSelector } from "../../store/selectors";
-import { useCallback, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProfileEdit from "./ProfileEdit";
 import ProfileInfo from "./ProfileInfo";
+import { getUserCourses } from "../../fetches/distributions";
+import CourseCard from "../Home/CourseCard";
+import { useNavigate } from "react-router-dom";
 
 const Profile = ({setSpinner, onSaveNewInfo}) => {
     const userId = useSelector(idSelector);
@@ -11,8 +13,10 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
     const login = useSelector(loginSelector);
     const pass = useSelector(passwordSelector);
     const info = useSelector(infoSelector);
+    const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [userCourse, setUserCourse] = useState();
 
     const newLogin = useRef();
     const newPass = useRef();
@@ -56,6 +60,18 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
       onSaveNewInfo(data, role || info.account.role);
     };
 
+    const handleCourseCard = (course) => {
+      navigate(`/courses/${course.id}`);
+    };
+
+    useEffect(() => {
+      const {account: {id, role}} = info;
+
+      if (role === 'STUDENT') {
+        getUserCourses(id).then(res => setUserCourse(res[0].course));
+      }
+    }, []);
+
     return (
       <div className="wrapper">
         <div className="Profile-info-wrapper">
@@ -87,7 +103,14 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
                 Редактировать Профиль
               </button>
           }
+          <hr className="Profile__line"/>
 
+          {
+            userCourse && <>
+              <h2 className="Profile-info-container__title">Активный курс</h2>
+              <CourseCard course={userCourse} onCourseCard={handleCourseCard}/>
+            </>
+          }
         </div>
       </div>
     );

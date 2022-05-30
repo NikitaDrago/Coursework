@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { courseUrl } from "../constants";
 
 const initialState = {
   coursesList: null,
@@ -8,7 +9,7 @@ const initialState = {
 export const putCourse = createAsyncThunk(
   'courses/put',
   async (data) => {
-    await fetch('http://localhost:8080/api/courses', {
+    await fetch(courseUrl, {
       method: 'PUT',
       headers: {
         "Content-Type": "application/json",
@@ -22,7 +23,7 @@ export const putCourse = createAsyncThunk(
 export const postCourse = createAsyncThunk(
   'courses/post',
   async (data) => {
-    await fetch('http://localhost:8080/api/courses', {
+    await fetch(courseUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ export const postCourse = createAsyncThunk(
 export const deleteCourse = createAsyncThunk(
   'courses/delete',
   async (id) => {
-    await fetch(`http://localhost:8080/api/courses/${id}`,
+    await fetch(`${courseUrl}/${id}`,
       {
         method: 'DELETE',
       }
@@ -46,7 +47,7 @@ export const deleteCourse = createAsyncThunk(
 export const getAllCourses = createAsyncThunk(
   'courses/getDataAll',
   async () => {
-    const res = fetch('http://localhost:8080/api/courses');
+    const res = fetch(courseUrl);
     return (await res).json();
   }
 );
@@ -54,7 +55,7 @@ export const getAllCourses = createAsyncThunk(
 export const getCourseById = createAsyncThunk(
   'courses/getById',
   async (id) => {
-    const res = fetch(`http://localhost:8080/api/courses/${id}`);
+    const res = fetch(`${courseUrl}/${id}`);
     return (await res).json();
   }
 );

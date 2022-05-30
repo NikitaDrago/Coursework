@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { courseSelector, roleSelector } from "../../store/selectors";
+import { courseSelector, infoSelector, roleSelector } from "../../store/selectors";
 import { useEffect, useRef, useState } from "react";
 import { deleteCourse, getCourseById, putCourse } from "../../store/coursesSlice";
 import Spinner from "../Spinner";
 import EditCourceInfo from "./EditCourceInfo";
 import CourseInfo from "./CourseInfo";
+import { deleteUserCourse, getUserCourses, postUserCourse } from "../../fetches/distributions";
 
 const Course = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const Course = () => {
   const [lectures, setLectures] = useState(null);
   const [spinner, setSpinner] = useState(false);
   const [isError, setIsError] = useState(false);
+  const info = useSelector(infoSelector);
+  const [userCourse, setUserCourse] = useState();
 
   const newTitle = useRef();
   const newWeeks = useRef();
@@ -72,12 +75,13 @@ const Course = () => {
       hours: course.hours,
     };
 
-    Promise
-      .all([dispatch(putCourse(data)), dispatch(getCourseById(id))])
-      .then(() => {
+    dispatch(putCourse(data))
+      .then((res) => {
+        dispatch(getCourseById(id));
         setIsEdit(!isEdit);
         setSelectLecture(null);
         setSpinner(false);
+
       });
   };
 
@@ -89,8 +93,36 @@ const Course = () => {
       });
   };
 
+  const handleEnrol = () => {
+    if (!userCourse) {
+      const data = {
+        student: {
+          account: {
+            id: info.account.id
+          }
+        },
+        course: {
+          id: Number(id),
+          lecturer: {
+            account: {
+              id: course.lecturer.account.id
+            }
+          }
+        }
+      };
+      postUserCourse(data);
+    } else {
+      deleteUserCourse(userCourse.id);
+    }
+
+    navigate('/');
+  };
+
   useEffect(() => {
     fetchLectures();
+    if (info && info.account.role === 'STUDENT') {
+      getUserCourses(info.account.id).then(res => setUserCourse(res[0]));
+    }
   }, []);
 
   useEffect(() => {
@@ -116,10 +148,11 @@ const Course = () => {
                 isError={isError}
                 setIsError={setIsError}
               />
-              : <CourseInfo role={role} course={course}/>
+              : <CourseInfo course={course}/>
           }
           {
-            role === 'ADMIN' && <div className="CourseInfo-admin">
+            (role === 'ADMIN' || info && info.account.role === 'TEACHER') &&
+            <div className="CourseInfo-admin">
               {
                 isEdit ? <button className="button CourseInfo-admin__button" onClick={() => {
                     setSpinner(true);
@@ -134,11 +167,23 @@ const Course = () => {
                 setIsEdit(!isEdit);
               }}
               >Отменить</button>}
-              <button className="button button_negative CourseInfo-admin__button" onClick={() => {
-                setSpinner(true);
-                handleDeleteCourse();
-              }
-              }>Удалить
+              <button className="button button_negative CourseInfo-admin__button"
+                      onClick={() => {
+                        setSpinner(true);
+                        handleDeleteCourse();
+                      }
+                      }>Удалить
+              </button>
+            </div>
+          }
+          {
+            info && info.account.role === 'STUDENT' &&
+            <div className="CourseInfo-admin">
+              <button
+                className="button CourseInfo-admin__button"
+                onClick={handleEnrol}
+              >
+                {userCourse && userCourse.course.id === Number(id) ? 'Уйти с курса' : 'Записаться на курс'}
               </button>
             </div>
           }
