@@ -11,6 +11,7 @@ const AddCourse = () => {
   const [isError, setIsError] = useState(false);
   const [isSuccess, setSuccess] = useState(false);
   const [selectLecture, setSelectLecture] = useState(null);
+  const [selectImg, setSelectImg] = useState(1);
 
   const title = useRef();
   const weeks = useRef();
@@ -59,7 +60,7 @@ const AddCourse = () => {
       name: title.current?.value,
       description: description.current?.value,
       weeks: postWeeks > 0 && postWeeks < 20 ? Number(weeks.current?.value) : 1,
-      hours: Math.floor(Math.random() * 10 + 1),
+      hours: selectImg,
       distributions: null
     };
 
@@ -120,6 +121,20 @@ const AddCourse = () => {
           />
           : <Spinner/>
       }
+
+      <hr className="Profile__line"/>
+      <div className="CourseCard-container">
+        {
+          Array.from({length: 6}, (_, id) => {
+            const img = require(`../../img/cards/${id + 1}.jpg`);
+
+            return <div key={img}
+                        className={`CourseCard__card ${selectImg === id + 1 && 'CourseCard__card_selected'}`}
+                        style={{backgroundImage: `url(${img}`}}
+                        onClick={() => setSelectImg(id + 1)}/>;
+          })
+        }
+      </div>
 
       <button style={{margin: '20px auto 0'}} className="button CourseInfo-admin__button" onClick={() => {
         setSpinner(true);

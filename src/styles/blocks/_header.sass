@@ -1,7 +1,7 @@
 .Header
   &-wrapper
     min-width: 375px
-    box-shadow: 0 2px 20px 2px rgb(34 60 80 / 60%)
+    box-shadow: 0 2px 20px 2px rgb(34 60 80 / 5%)
     border-radius: 0 0 20px 20px
     padding: 20px 40px
     display: flex
@@ -9,10 +9,9 @@
     align-items: center
     font-weight: 600
     font-size: 20px
-    background-color: #fff
+    border: 1px solid #fff
 
   &__button
-    border: 1px solid $button-border
     border-radius: 5px
     margin-right: 20px
     font-size: 15px
@@ -20,14 +19,16 @@
     color: $text-color
     padding: 5px
     transition: .3s
+    width: auto
+    height: 30px
+    background-color: #fff
+    border: none
     &:last-child
       margin-right: 0
     &:hover
       transition: .3s
       border: 1px solid $text-hover
       background-color: $text-hover
-      color: #fff
     &:active
       transition: .3s
       transform: scale(1.3)
-

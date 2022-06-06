@@ -29,12 +29,12 @@ const Header = ({onClickModal, onLogout}) => {
           <div>
             {
               role === 'ADMIN' &&
-              <button className="button Header__button" onClick={handleEditProfiles}>Admin Panel</button>
+              <button className="button Header__button" style={{backgroundColor: '#fff'}} onClick={handleEditProfiles}>Admin Panel</button>
             }
-            <button className="button Header__button" onClick={handleProfile}>Профиль</button>
-            <button className="button Header__button" onClick={onLogout}>Выйти</button>
+            <button className="button Header__button" style={{backgroundColor: '#fff'}} onClick={handleProfile}>Профиль</button>
+            <button className="button Header__button" style={{backgroundColor: '#fff'}} onClick={onLogout}>Выйти</button>
           </div>
-          : <button className="button Header__button" onClick={onClickModal}>Войти</button>
+          : <button className="button Header__button" style={{backgroundColor: '#fff'}} onClick={onClickModal}>Войти</button>
       }
     </header>
   );

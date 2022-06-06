@@ -50,6 +50,7 @@ const App = () => {
     }
 
     try {
+      console.log({data, api: url})
       await dispatch(postNewProfileData({data, api: url}));
 
       switch (type) {

@@ -3,7 +3,8 @@ import { courseUrl } from "../constants";
 
 const initialState = {
   coursesList: null,
-  course: null
+  course: null,
+  userCourse: null
 };
 
 export const putCourse = createAsyncThunk(
@@ -66,6 +67,9 @@ export const coursesSlice = createSlice({
   reducers: {
     clearCourse: state => {
       state.course = null;
+    },
+    setUserCourse: state => {
+      state.userCourse = state.payload
     }
   },
   extraReducers: builder => {
@@ -79,6 +83,6 @@ export const coursesSlice = createSlice({
   }
 });
 
-export const {clearCourse} = coursesSlice.actions;
+export const {clearCourse, setUserCourse} = coursesSlice.actions;
 
 export default coursesSlice.reducer;

@@ -19,8 +19,9 @@ const Course = () => {
   const [lectures, setLectures] = useState(null);
   const [spinner, setSpinner] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [img, selectImg] = useState(1);
   const info = useSelector(infoSelector);
-  const [userCourse, setUserCourse] = useState();
+  const [userCourse, setUserCourse] = useState(false);
 
   const newTitle = useRef();
   const newWeeks = useRef();
@@ -54,9 +55,8 @@ const Course = () => {
         )
       );
   };
-
   const handleSave = () => {
-    if (!selectLecture && !newTitle.current.value && !newWeeks.current.value && !newDescription.current.value) {
+    if (!selectLecture && !newTitle.current.value && !newWeeks.current.value && !newDescription.current.value && (img === course.hours)) {
       setSpinner(false);
       setIsError(true);
       return;
@@ -72,7 +72,7 @@ const Course = () => {
       name: newTitle.current.value || course.name,
       description: newDescription.current.value || course.description,
       weeks: newWeeks.current.value || course.weeks,
-      hours: course.hours,
+      hours: img,
     };
 
     dispatch(putCourse(data))
@@ -94,7 +94,10 @@ const Course = () => {
   };
 
   const handleEnrol = () => {
-    if (!userCourse) {
+    if (userCourse && userCourse.course.id === Number(id)) {
+      deleteUserCourse(userCourse.id);
+      setUserCourse(null);
+    } else {
       const data = {
         student: {
           account: {
@@ -110,9 +113,11 @@ const Course = () => {
           }
         }
       };
-      postUserCourse(data);
-    } else {
-      deleteUserCourse(userCourse.id);
+      postUserCourse(data).then(() => {
+        getUserCourses(info.account.id).then(res => {
+          setUserCourse(res[0]);
+        });
+      });
     }
 
     navigate('/');
@@ -121,12 +126,14 @@ const Course = () => {
   useEffect(() => {
     fetchLectures();
     if (info && info.account.role === 'STUDENT') {
-      getUserCourses(info.account.id).then(res => setUserCourse(res[0]));
+      getUserCourses(info.account.id).then(res => {
+        setUserCourse(res[0]);
+      });
     }
   }, []);
 
   useEffect(() => {
-    dispatch(getCourseById(id));
+    dispatch(getCourseById(id)).then(res => selectImg(res.payload.hours));
   }, [dispatch, id]);
 
   return (
@@ -147,6 +154,8 @@ const Course = () => {
                 newWeeks={newWeeks}
                 isError={isError}
                 setIsError={setIsError}
+                setSelectImg={selectImg}
+                selectImg={img}
               />
               : <CourseInfo course={course}/>
           }
@@ -179,12 +188,18 @@ const Course = () => {
           {
             info && info.account.role === 'STUDENT' &&
             <div className="CourseInfo-admin">
-              <button
-                className="button CourseInfo-admin__button"
-                onClick={handleEnrol}
-              >
-                {userCourse && userCourse.course.id === Number(id) ? 'Уйти с курса' : 'Записаться на курс'}
-              </button>
+              {
+                userCourse && userCourse.course.id === Number(id) && <button
+                  className="button CourseInfo-admin__button"
+                  onClick={handleEnrol}
+                >Уйти с курса</button>
+              }
+              {
+                !userCourse && <button
+                  className="button CourseInfo-admin__button"
+                  onClick={handleEnrol}
+                >Записаться на курс</button>
+              }
             </div>
           }
         </div>

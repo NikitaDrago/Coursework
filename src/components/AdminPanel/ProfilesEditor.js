@@ -42,8 +42,8 @@ const ProfilesEditor = ({onSaveNewInfo}) => {
   }, [onSaveNewInfo, profile]);
 
   const handleDeleteProfile = useCallback(() => {
-    Promise
-      .all(dispatch(deleteProfile(profile.id)), dispatch(getUsers(id)))
+    dispatch(deleteProfile(profile.id))
+      .then(() => dispatch(getUsers(id)))
       .then(() => {
         setProfile(null);
         setSpinner(false);

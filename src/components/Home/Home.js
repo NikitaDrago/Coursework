@@ -35,12 +35,13 @@ const Home = () => {
   
   return (
     spinner ? <Spinner/> : <div className="wrapper">
-      <h2 className="Home-wrapper__title">Доступные курсы</h2>
+      <h2 className="Home-wrapper__title">ДОСТУПНЫЕ КУРСЫ</h2>
       <div className="Home-container">
         {
-          courses && courses.map(course => <CourseCard
+          courses && courses.map((course, id) => <CourseCard
             key={`${course.name}_${Date.now()}`}
             course={course}
+            id={id+1}
             onCourseCard={handleCourseCard}
           />)
         }

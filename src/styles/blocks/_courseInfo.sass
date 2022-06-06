@@ -88,3 +88,42 @@
       &__button
         width: 30%
         font-size: 12px
+
+
+.CourseCard
+  &-container
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    gap: 10px
+
+  &__card
+    position: relative
+    height: 200px
+    border-radius: 20px
+    background-size: cover
+    background-position: right
+    background-repeat: no-repeat
+    transition: .3s
+    cursor: pointer
+
+    &_selected
+      background-color: rgba(255, 255, 255, 0.5)
+
+      &:before
+        position: absolute
+        content: ''
+        //background-color: rgba(0,255,0, 0.)
+        border: 10px solid rgb(0, 255, 0)
+        left: 0
+        top: 0
+        width: 95%
+        border-radius: 18px
+        height: 90%
+
+
+    &:hover
+      transform: scale(1.025)
+
+    &:active
+      transition: .3s
+      transform: scale(1.15)

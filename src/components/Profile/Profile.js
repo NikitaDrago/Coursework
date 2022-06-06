@@ -16,7 +16,7 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [userCourse, setUserCourse] = useState();
+  const [userCourse, setUserCourse] = useState(null);
 
   const newLogin = useRef();
   const newPass = useRef();
@@ -65,10 +65,14 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
   };
 
   useEffect(() => {
-    const {account: {id, role}} = info;
+    if (role !== 'ADMIN') {
 
-    if (role === 'STUDENT') {
-      getUserCourses(id).then(res => setUserCourse(res[0].course));
+      const {account: {id, role}} = info;
+      if (role === 'STUDENT') {
+        getUserCourses(id)
+          .then(res => setUserCourse(res[0].course))
+          .catch(error => console.log('none'));
+      }
     }
   }, []);
 
@@ -103,10 +107,10 @@ const Profile = ({setSpinner, onSaveNewInfo}) => {
               Редактировать Профиль
             </button>
         }
-        <hr className="Profile__line"/>
 
         {
           userCourse && <>
+            <hr className="Profile__line"/>
             <h2 className="Profile-info-container__title">Активный курс</h2>
             <CourseCard course={userCourse} onCourseCard={handleCourseCard}/>
           </>

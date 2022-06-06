@@ -5,6 +5,7 @@ export const postNewProfileData = createAsyncThunk(
   'user/fetchLogin',
   async ({data, api}) => {
     try {
+      console.log(`${url}/api/${api}`)
       await fetch(`${url}/api/${api}`, {
         method: 'PUT',
         headers: {
@@ -30,7 +31,8 @@ export const deleteProfile = createAsyncThunk(
 export const postProfile = createAsyncThunk(
   'users/post',
   async (data) => {
-    await fetch(courseUrl, {
+    console.log(data)
+    await fetch(usersUrl, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
